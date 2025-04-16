@@ -1,0 +1,13 @@
+# Common Helm ignore patterns
+*.swp
+*.bak
+*.tmp
+*.log
+*.out
+*.env
+.DS_Store
+.idea/
+.vscode/
+node_modules/
+dist/
+build/
