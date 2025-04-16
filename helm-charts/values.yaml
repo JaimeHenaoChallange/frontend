@@ -1,0 +1,7 @@
+replicaCount: 1
+image:
+  repository: jaimehenao8126/frontend
+  tag: latest
+service:
+  type: ClusterIP
+  port: 80
