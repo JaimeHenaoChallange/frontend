@@ -1,9 +1,12 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: {{ .Release.Name }}-frontend
+  name: {{ .Release.Name }}
   labels:
     app: {{ .Chart.Name }}
+    {{- if .Values.kuma.enabled }}
+    kuma.io/service: {{ .Values.kuma.service }}
+    {{- end }}
 spec:
   replicas: {{ .Values.replicaCount }}
   selector:
@@ -13,22 +16,13 @@ spec:
     metadata:
       labels:
         app: {{ .Chart.Name }}
+        {{- if .Values.kuma.enabled }}
+        kuma.io/service: {{ .Values.kuma.service }}
+        {{- end }}
     spec:
       containers:
-        - name: frontend
+        - name: {{ .Chart.Name }}
           image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
           imagePullPolicy: {{ .Values.image.pullPolicy }}
           ports:
             - containerPort: {{ .Values.service.port }}
-          livenessProbe:
-            httpGet:
-              path: /
-              port: {{ .Values.service.port }}
-            initialDelaySeconds: 10
-            periodSeconds: 10
-          readinessProbe:
-            httpGet:
-              path: /
-              port: {{ .Values.service.port }}
-            initialDelaySeconds: 5
-            periodSeconds: 5
